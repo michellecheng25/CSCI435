@@ -4,7 +4,6 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" href="#" />
 
     <!-- Bootstrap CSS -->
     <link
@@ -17,6 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script src="search.js"></script>
+    <script src="displayInventory.js"></script>
 
     <title>Money Saver</title>
 
@@ -25,17 +25,10 @@
         max-width: 800px;
         margin: 0 auto;
       }
-      .main {
-        margin: 0 auto;
-        margin-top: 150px;
-        font-size: 2.5rem;
-        text-align: center;
-        font-family: Garamond, serif;
-      }
 
       .searchbar {
         margin: 0 auto;
-        margin-top: 100px;
+        margin-top: 15px;
       }
 
       .filters {
@@ -54,10 +47,11 @@
   </head>
   <body>
     <div class="container">
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">Money Saver</a>
+      </nav>
+
       <div class="inner-container">
-        <div class="main">
-          <b>Money Saver</b>
-        </div>
         <form class="searchbar d-flex">
           <input
             class="form-control mr-sm-2"
@@ -66,12 +60,7 @@
             aria-label="Search"
             id="searchbar"
           />
-          <button
-            type="button"
-            class="btn btn-success"
-            id="search"
-            onclick="location.href='inventory.html'"
-          >
+          <button type="button" class="btn btn-success" id="search">
             Search
           </button>
         </form>
@@ -115,6 +104,8 @@
             <option value="United Kingdom">United Kingdom</option>
             <option value="United States">United States</option>
           </select>
+
+          <div class="inventory"></div>
         </div>
       </div>
     </div>
