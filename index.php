@@ -4,7 +4,6 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" href="#" />
 
     <!-- Bootstrap CSS -->
     <link
@@ -58,22 +57,17 @@
         <div class="main">
           <b>Money Saver</b>
         </div>
-        <form class="searchbar d-flex">
+        <div class="inner-container">
+        <form class="searchbar d-flex" action="inventory.php">
           <input
             class="form-control mr-sm-2"
-            type="search"
+            type="text"
             placeholder="Search Item"
             aria-label="Search"
+            name="item"
             id="searchbar"
           />
-          <button
-            type="button"
-            class="btn btn-success"
-            id="search"
-            onclick="location.href='inventory.html'"
-          >
-            Search
-          </button>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
 
         <div class="filters">
@@ -116,6 +110,7 @@
             <option value="United States">United States</option>
           </select>
         </div>
+        
       </div>
     </div>
 

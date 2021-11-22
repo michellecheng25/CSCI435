@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,7 +17,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script src="search.js"></script>
-    <script src="displayInventory.js"></script>
 
     <title>Money Saver</title>
 
@@ -48,22 +48,22 @@
   <body>
     <div class="container">
       <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="index.html">Money Saver</a>
+        <a class="navbar-brand" href="index.php">Money Saver</a>
       </nav>
 
       <div class="inner-container">
-        <form class="searchbar d-flex">
+        <form class="searchbar d-flex" action="inventory.php">
           <input
             class="form-control mr-sm-2"
-            type="search"
+            type="text"
             placeholder="Search Item"
             aria-label="Search"
+            name="item"
             id="searchbar"
           />
-          <button type="button" class="btn btn-success" id="search">
-            Search
-          </button>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
+
 
         <div class="filters">
           <div class="priceFilter mt-2">
@@ -104,12 +104,28 @@
             <option value="United Kingdom">United Kingdom</option>
             <option value="United States">United States</option>
           </select>
-
-          <div class="inventory"></div>
+          </div>
         </div>
+        <div class="inventory">
+          <?php
+              include "dbh.inc.php";
+              $item = $_GET["item"];
+
+              $sql="SELECT * FROM vendors WHERE vendor LIKE '" . $item . "';";
+              $result = mysqli_query($conn, $sql);
+              $resultCheck = mysqli_num_rows($result);
+
+              if($resultCheck > 0){
+              while($row = mysqli_fetch_assoc($result)){
+                  echo $row["vendor"] . "<br>";
+              }
+
+              }
+              $conn->close();
+          ?>
       </div>
     </div>
-
+    
     <!-- Bootstrap Bundle with Popper -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
