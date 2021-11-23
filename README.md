@@ -18,12 +18,12 @@ Features:
 
 This project targets online shoppers who are looking to save money. Users must provide an item to look up. After looking through all the options, the user can click on the provided website links and place their orders directly to the online store/vendor.
 
-### Example SQL query:
 
-SELECT \* FROM items
-INNER JOIN vendors
-ON items.vendor = vendors.vendor
-WHERE vendors.region = 'Austria'
-AND items.price > 20 AND items.price < 30
-ORDER BY items.price ASC
-;
+### How to Use:
+- Installed Mysql and have the proper database.
+- Download PHP if you don't already have it.
+- Go to project directory in terminal.
+- Use the command: php -S 127.0.0.1:[Port number] e.g. php -S 127.0.0.1:8000 then go to the link: http://127.0.0.1:8000
+- Make sure the variables (servername, username, password, database) are all correct. Note: Username and password should be the same as the mysql username and password.
+
+
