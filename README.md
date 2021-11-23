@@ -26,4 +26,12 @@ This project targets online shoppers who are looking to save money. Users must p
 - Use the command: php -S 127.0.0.1:[Port number] e.g. php -S 127.0.0.1:8000 then go to the link: http://127.0.0.1:8000
 - Make sure the variables (servername, username, password, database) are all correct. Note: Username and password should be the same as the mysql username and password.
 
+### Example SQL query:
 
+SELECT \* FROM items
+INNER JOIN vendors
+ON items.vendor = vendors.vendor
+WHERE vendors.region = 'Austria'
+AND items.price > 20 AND items.price < 30
+ORDER BY items.price ASC
+;
