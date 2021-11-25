@@ -127,29 +127,49 @@
             </thead>
             <tbody>
             <?php
+              
+              /*SELECT * FROM items 
+              INNER JOIN vendors 
+              ON items.vendor = vendors.vendor 
+              WHERE vendors.region = 'Austria' AND items.price > 20 AND items.price < 30 
+              ORDER BY items.price ASC ;
+              */
               /*
               echo $price . "<br>";
               echo $region . "<br>";
               echo $min . "<br>";
               echo $max . "<br>";
               */
+              
               $item = "%$item%";
 
               if(strlen($item) > 2) {
                 //create a template
-                $sql="SELECT * FROM items WHERE item LIKE ?;";
-                //create a prepared statement
-                $stmt = mysqli_stmt_init($conn);
-                //prepare the prepared statement
-                if(!mysqli_stmt_prepare($stmt, $sql)){
-                  echo "No items found.";
-                } else{
-                  //bind parameter to the placeholder
-                  mysqli_stmt_bind_param($stmt, "s", $item);
-                  //Run parameters inside database
-                  mysqli_stmt_execute($stmt);
-                  $result = mysqli_stmt_get_result($stmt);
-                  $resultCheck = mysqli_num_rows($result);
+                $sql="SELECT * FROM items";
+                
+                
+                if($region != "all") {
+                  $sql .= " INNER JOIN vendors ON items.vendor = vendors.vendor WHERE vendors.region='$region' AND";
+                }    
+                else $sql .= " WHERE";
+                if($min !=""){
+                  $sql .= " items.price >= $min AND";
+                }
+                if($max !=""){
+                  $sql .= " items.price <= $max AND";
+                }
+                $sql .= " items.item LIKE '$item'";
+                if($price !="noFilter"){
+                  $price = strtoupper($price);
+                  $sql .= " ORDER BY price $price";
+                }
+                $sql .= ";";
+                echo $sql . "<br>";
+                
+                
+                $result = mysqli_query($conn, $sql);
+                $resultCheck = mysqli_num_rows($result);
+               
                  
                   if($resultCheck > 0){
                     while($row = mysqli_fetch_assoc($result)){
@@ -162,7 +182,7 @@
                         echo "</tr>";
                     }
                   }
-                }
+                
               }  
           ?>
     
