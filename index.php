@@ -26,6 +26,8 @@
 
     <script src="filters.js"></script>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <title>Money Saver</title>
 
     <style type="text/css">
@@ -47,13 +49,23 @@
       .active {
         background-color: green !important;
       }
+      
+      #shopping-cart {
+        font-size: 35px !important;
+      }
+      #shopping-cart,
+      #add-to-cart{
+        color: red;
+        cursor: pointer;
+      }
 
     </style>
   </head>
   <body>
     <div class="container">
-      <nav class="navbar navbar-light bg-light">
+      <nav class="navbar navbar-light bg-light justify-content-between">
         <a class="navbar-brand" href="index.php">Money Saver</a>
+        <i class='material-icons' id="shopping-cart" onclick="location.href='shopping-cart.php';">add_shopping_cart</i>
       </nav>
 
       <div class="inner-container">
@@ -115,7 +127,8 @@
         </form>
       </div>
         <div class="itemsList">
-        <table class="table">
+          <form id="myform" action='shopping-cart.php'></form>
+          <table class="table">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Product Name</th>
@@ -126,66 +139,53 @@
               </tr>
             </thead>
             <tbody>
-            <?php
-              
-              /*SELECT * FROM items 
-              INNER JOIN vendors 
-              ON items.vendor = vendors.vendor 
-              WHERE vendors.region = 'Austria' AND items.price > 20 AND items.price < 30 
-              ORDER BY items.price ASC ;
-              */
-              /*
-              echo $price . "<br>";
-              echo $region . "<br>";
-              echo $min . "<br>";
-              echo $max . "<br>";
-              */
-              
-              $item = "%$item%";
+              <?php
+                $item = "%$item%";
 
-              if(strlen($item) > 2) {
-                //create a template
-                $sql="SELECT * FROM items";
-                
-                
-                if($region != "all") {
-                  $sql .= " INNER JOIN vendors ON items.vendor = vendors.vendor WHERE vendors.region='$region' AND";
-                }    
-                else $sql .= " WHERE";
-                if($min !=""){
-                  $sql .= " items.price >= $min AND";
-                }
-                if($max !=""){
-                  $sql .= " items.price <= $max AND";
-                }
-                $sql .= " items.item LIKE '$item'";
-                if($price !="noFilter"){
-                  $price = strtoupper($price);
-                  $sql .= " ORDER BY price $price";
-                }
-                $sql .= ";";
-                echo $sql . "<br>";
-                
-                
-                $result = mysqli_query($conn, $sql);
-                $resultCheck = mysqli_num_rows($result);
-               
-                 
-                  if($resultCheck > 0){
-                    while($row = mysqli_fetch_assoc($result)){
-                        echo "<tr>";
-                        echo "<td>" . $row["item"] . "</td>";
-                        echo "<td>" . $row["vendor"] . "</td>";
-                        echo "<td>$" . $row["price"] . "</td>";
-                        echo "<td>" . $row["rating"] . "</td>";
-                        echo "<td><a href='" . $row["weblink"] . "'>Go to Product Page</a>";
-                        echo "</tr>";
-                    }
+                if(strlen($item) > 2) {
+                  $sql="SELECT * FROM items";
+                  
+                  
+                  if($region != "all") {
+                    $sql .= " INNER JOIN vendors ON items.vendor = vendors.vendor WHERE vendors.region='$region' AND";
+                  }    
+                  else $sql .= " WHERE";
+                  if($min !=""){
+                    $sql .= " items.price >= $min AND";
                   }
+                  if($max !=""){
+                    $sql .= " items.price <= $max AND";
+                  }
+                  $sql .= " items.item LIKE '$item'";
+                  if($price !="noFilter"){
+                    $price = strtoupper($price);
+                    $sql .= " ORDER BY price $price";
+                  }
+                  $sql .= ";";
+                  echo $sql . "<br>";
+                  
+                  
+                  $result = mysqli_query($conn, $sql);
+                  $resultCheck = mysqli_num_rows($result);
                 
-              }  
-          ?>
-    
+                  
+                    if($resultCheck > 0){
+                      while($row = mysqli_fetch_assoc($result)){
+                          echo "<tr>";
+                          echo "<td><button form='myform' action='add-to-cart' name='insert' value='$row[product_id]' type='submit' id='add-to-cart'>add to cart </button> " . $row["item"] . "</td>";
+                          echo "<td>" . $row["vendor"] . "</td>";
+                          echo "<td>$" . $row["price"] . "</td>";
+                          echo "<td>" . $row["rating"] . "</td>";
+                          echo "<td><a href='" . $row["weblink"] . "'>Go to Product Page</a>";
+                          echo "</tr>";
+                      }
+                    }
+                  
+                }
+
+
+              ?>
+
             </tbody>
           </table>
       </div>
