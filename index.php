@@ -115,7 +115,18 @@
         </form>
       </div>
         <div class="itemsList">
-          <?php
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">Price</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Link</th>
+              </tr>
+            </thead>
+            <tbody>
+            <?php
               /*
               echo $price . "<br>";
               echo $region . "<br>";
@@ -139,20 +150,24 @@
                   mysqli_stmt_execute($stmt);
                   $result = mysqli_stmt_get_result($stmt);
                   $resultCheck = mysqli_num_rows($result);
-
+                 
                   if($resultCheck > 0){
                     while($row = mysqli_fetch_assoc($result)){
-                        echo $row["item"] . "<br>";
-                        echo $row["vendor"] . "<br>";
-                        echo $row["price"] . "<br>";
-                        echo $row["rating"] . "<br>";
-                        echo $row["weblink"] . "<br>";
+                        echo "<tr>";
+                        echo "<td>" . $row["item"] . "</td>";
+                        echo "<td>" . $row["vendor"] . "</td>";
+                        echo "<td>$" . $row["price"] . "</td>";
+                        echo "<td>" . $row["rating"] . "</td>";
+                        echo "<td><a href='" . $row["weblink"] . "'>Go to Product Page</a>";
+                        echo "</tr>";
                     }
-                  } else "No items found!";
+                  }
                 }
-              }
-              
+              }  
           ?>
+    
+            </tbody>
+          </table>
       </div>
     </div>
     
