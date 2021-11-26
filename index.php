@@ -26,6 +26,8 @@
 
     <script src="filters.js"></script>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <title>Money Saver</title>
 
     <style type="text/css">
@@ -47,13 +49,23 @@
       .active {
         background-color: green !important;
       }
+      
+      #shopping-cart {
+        font-size: 35px !important;
+      }
+      #shopping-cart,
+      #add-to-cart{
+        color: red;
+        cursor: pointer;
+      }
 
     </style>
   </head>
   <body>
     <div class="container">
-      <nav class="navbar navbar-light bg-light">
+      <nav class="navbar navbar-light bg-light justify-content-between">
         <a class="navbar-brand" href="index.php">Money Saver</a>
+        <i class='material-icons' id="shopping-cart" onclick="location.href='shopping-cart.php';">add_shopping_cart</i>
       </nav>
 
       <div class="inner-container">
@@ -115,44 +127,67 @@
         </form>
       </div>
         <div class="itemsList">
-          <?php
-              /*
-              echo $price . "<br>";
-              echo $region . "<br>";
-              echo $min . "<br>";
-              echo $max . "<br>";
-              */
-              $item = "%$item%";
+          <form id="myform" action='shopping-cart.php'></form>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">Price</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $item = "%$item%";
 
-              if(strlen($item) > 2) {
-                //create a template
-                $sql="SELECT * FROM items WHERE item LIKE ?;";
-                //create a prepared statement
-                $stmt = mysqli_stmt_init($conn);
-                //prepare the prepared statement
-                if(!mysqli_stmt_prepare($stmt, $sql)){
-                  echo "No items found.";
-                } else{
-                  //bind parameter to the placeholder
-                  mysqli_stmt_bind_param($stmt, "s", $item);
-                  //Run parameters inside database
-                  mysqli_stmt_execute($stmt);
-                  $result = mysqli_stmt_get_result($stmt);
+                if(strlen($item) > 2) {
+                  $sql="SELECT * FROM items";
+                  
+                  
+                  if($region != "all") {
+                    $sql .= " INNER JOIN vendors ON items.vendor = vendors.vendor WHERE vendors.region='$region' AND";
+                  }    
+                  else $sql .= " WHERE";
+                  if($min !=""){
+                    $sql .= " items.price >= $min AND";
+                  }
+                  if($max !=""){
+                    $sql .= " items.price <= $max AND";
+                  }
+                  $sql .= " items.item LIKE '$item'";
+                  if($price !="noFilter"){
+                    $price = strtoupper($price);
+                    $sql .= " ORDER BY price $price";
+                  }
+                  $sql .= ";";
+                  echo $sql . "<br>";
+                  
+                  
+                  $result = mysqli_query($conn, $sql);
                   $resultCheck = mysqli_num_rows($result);
-
-                  if($resultCheck > 0){
-                    while($row = mysqli_fetch_assoc($result)){
-                        echo $row["item"] . "<br>";
-                        echo $row["vendor"] . "<br>";
-                        echo $row["price"] . "<br>";
-                        echo $row["rating"] . "<br>";
-                        echo $row["weblink"] . "<br>";
+                
+                  
+                    if($resultCheck > 0){
+                      while($row = mysqli_fetch_assoc($result)){
+                          echo "<tr>";
+                          echo "<td><button form='myform' action='add-to-cart' name='insert' value='$row[product_id]' type='submit' id='add-to-cart'>add to cart </button> " . $row["item"] . "</td>";
+                          echo "<td>" . $row["vendor"] . "</td>";
+                          echo "<td>$" . $row["price"] . "</td>";
+                          echo "<td>" . $row["rating"] . "</td>";
+                          echo "<td><a href='" . $row["weblink"] . "'>Go to Product Page</a>";
+                          echo "</tr>";
+                      }
                     }
-                  } else "No items found!";
+                  
                 }
-              }
-              
-          ?>
+
+
+              ?>
+
+            </tbody>
+          </table>
       </div>
     </div>
     
