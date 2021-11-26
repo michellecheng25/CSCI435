@@ -162,7 +162,7 @@
                     $sql .= " ORDER BY price $price";
                   }
                   $sql .= ";";
-                  echo $sql . "<br>";
+                  //echo $sql . "<br>";
                   
                   
                   $result = mysqli_query($conn, $sql);
