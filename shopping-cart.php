@@ -79,9 +79,8 @@
                 <thead class="thead-dark">
                     <tr>
                     <th scope="col">Product Name</th>
-                    <th scope="col">Vendor</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Rating</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
                     <th scope="col">Link</th>
                     </tr>
                 </thead>
@@ -93,7 +92,7 @@
 
                         $sql="SELECT *, TRUNCATE(price*quantity, 2) as 'total' FROM saved_items INNER JOIN items ON saved_items.product_id = items.product_id;";
                         
-                        //echo $sql . "<br>";
+                        echo $sql . "<br>";
                         
                         $result = mysqli_query($conn, $sql);
                         $resultCheck = mysqli_num_rows($result);
@@ -102,9 +101,8 @@
                             while($row = mysqli_fetch_assoc($result)){
                                 echo "<tr>";
                                 echo "<td> <button form='myform' class='material-icons remove' name='remove' value='" . $row["product_id"] . "'>close</button> " . $row["item"] . "</td>";
-                                echo "<td>" . $row["vendor"] . "</td>";
-                                echo "<td>$" . $row["price"] . "</td>";
-                                echo "<td>" . $row["rating"] . "</td>";
+                                echo "<td>" . $row["quantity"] . "</td>";
+                                echo "<td>" . $row["total"] . "</td>";
                                 echo "<td><a href='" . $row["weblink"] . "'>Go to Product Page</a>";
                                 echo "</tr>";
                             }
